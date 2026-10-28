@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14110e">
+<title>Pedro · Aula EBI · Igreja Nova Vida de Botafogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --gold:#e6b23e;
+  --gold-hi:#f6d27a;
+  --ink:#0b0b0c;
+  --paper:#f6f5f1;
+  --dim:#f6f5f19e;
+  --line:#e6b23e42;
+  --brand:#14110e;
+  --glass:#1414168c;
+  --fio:#ffffff14;
+  --navbar-height:70px;
+  --sans:"Montserrat",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--brand);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--sans);font-weight:500;margin:0}
+p{margin:0 0 14px}
+button,a{font-family:inherit}
+
+/* Navbar */
+.navbar{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:5000;
+  height:var(--navbar-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  padding:0 7.5%;
+  color:var(--paper);
+  background:#0b0b0cf2;
+  border-bottom:1px solid var(--line);
+  box-shadow:0 8px 24px #00000059;
+}
+.navbar__progress{
+  position:absolute;
+  left:0;bottom:0;
+  height:2px;
+  width:0;
+  background:linear-gradient(90deg,var(--gold),var(--gold-hi));
+  pointer-events:none;
+}
+.logo{flex-shrink:0}
+.logo a{display:flex;align-items:center}
+.logo img{height:52px;width:auto}
+.navbar__nav{flex:1}
+.navbar__menu{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.navbar__menu a{
+  position:relative;
+  display:inline-block;
+  padding:8px 0;
+  color:#f6f5f1c7;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:color .25s;
+}
+.navbar__menu a::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:1px;
+  background:var(--gold);
+  transform:scaleX(0);
+  transform-origin:50%;
+  transition:transform .25s;
+}
+.navbar__menu a:hover,.navbar__menu a.on{color:var(--gold)}
+.navbar__menu a:hover::after,.navbar__menu a.on::after{transform:scaleX(1)}
+.navbar__cta{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--gold);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.4px;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background .2s,transform .15s;
+}
+.navbar__cta:hover{background:var(--gold-hi);transform:translateY(-1px)}
+.navbar__toggle{
+  display:none;
+  width:48px;height:48px;
+  margin:0 -12px 0 0;
+  padding:0;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:var(--paper);
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+}
+.navbar__toggle span{
+  display:block;
+  width:22px;height:2px;
+  border-radius:2px;
+  background:currentColor;
+}
+
+.navbar__overlay{
+  position:fixed;
+  inset:0;
+  z-index:5005;
+  background:#00000080;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s,visibility .3s;
+}
+.navbar__overlay.is-open{opacity:1;visibility:visible}
+.navbar__drawer{
+  display:none;
+  position:fixed;
+  top:0;right:0;bottom:0;
+  z-index:5010;
+  width:min(320px,80vw);
+  flex-direction:column;
+  background:var(--ink);
+  border-left:1px solid var(--line);
+  box-shadow:-18px 0 40px #0000008c;
+  transform:translateX(100%);
+  visibility:hidden;
+  transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear .32s;
+  overflow-y:auto;
+}
+.navbar__drawer.is-open{
+  transform:translateX(0);
+  visibility:visible;
+  transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s;
+}
+.navbar__drawer-top{
+  height:var(--navbar-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px 0 22px;
+  border-bottom:1px solid var(--fio);
+}
+.navbar__drawer-title{
+  color:var(--gold);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.navbar__drawer-close{
+  width:48px;height:48px;
+  border:0;border-radius:12px;
+  background:transparent;
+  color:var(--paper);
+  position:relative;
+  cursor:pointer;
+}
+.navbar__drawer-close span{
+  position:absolute;
+  left:12px;top:23px;
+  width:24px;height:2px;
+  border-radius:2px;
+  background:currentColor;
+}
+.navbar__drawer-close span:first-child{transform:rotate(45deg)}
+.navbar__drawer-close span:last-child{transform:rotate(-45deg)}
+.navbar__drawer-cta{
+  margin:18px 22px 8px;
+  display:block;
+  padding:12px 18px;
+  border-radius:999px;
+  background:var(--gold);
+  color:var(--ink);
+  font-weight:600;
+  text-align:center;
+  text-decoration:none;
+}
+.navbar__drawer-list{list-style:none;margin:8px 0 0;padding:0}
+.navbar__drawer-list a{
+  display:block;
+  padding:16px 22px;
+  border-bottom:1px solid var(--fio);
+  color:var(--paper);
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  text-decoration:none;
+}
+.navbar__drawer-list a.on{color:var(--gold)}
+.navbar__drawer-verso{
+  margin:auto 22px 28px;
+  padding-top:22px;
+  color:var(--dim);
+  font-size:14px;
+  line-height:1.6;
+}
+.navbar__drawer-verso p{margin:0}
+.navbar__drawer-verso cite{
+  display:block;
+  margin-top:8px;
+  color:var(--gold);
+  font-style:normal;
+  font-size:12px;
+  letter-spacing:1px;
+}
+body.menu-open{overflow:hidden}
+
+/* Hero */
+.section-home{
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:var(--navbar-height) 7.5% 1.5rem;
+  color:#f5f5f5;
+  background:
+    linear-gradient(#0003,#000000b3),
+    url("assets/hero.webp") center/cover no-repeat;
+  background-color:#14110e;
+}
+.section-home .text{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:min(920px,100%);
+}
+.kicker{
+  display:block;
+  margin:12px 0;
+  color:var(--gold);
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.section-home h1{
+  margin:0;
+  font-size:3.5rem;
+  font-weight:700;
+  line-height:1.12;
+  color:#f5f5f5;
+}
+.section-home h4{
+  margin:1.5rem 0 0;
+  font-size:1.375rem;
+  font-weight:500;
+  line-height:1.4;
+}
+.section-home .lede{
+  margin:.75rem 0 0;
+  color:#f5f5f5cc;
+  font-size:1.0625rem;
+  font-weight:400;
+  line-height:1.5;
+}
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  margin-top:32px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:13px 22px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:16px;
+  font-weight:500;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform .15s,background .2s,color .2s,border-color .2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-hi)}
+.btn-ghost{
+  background:#0b0b0c66;
+  border-color:var(--line);
+  color:var(--paper);
+  backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{background:#0b0b0c99;border-color:var(--gold);color:var(--gold)}
+
+/* Editorial */
+.wrap{width:min(1180px,85%);margin:0 auto}
+.ed{
+  display:grid;
+  grid-template-columns:.42fr 1fr;
+  align-items:start;
+  gap:34px;
+  padding:64px 0;
+  scroll-margin-top:calc(var(--navbar-height) + 12px);
+}
+.lead-col h3{
+  margin-top:12px;
+  font-size:36px;
+  font-weight:500;
+  letter-spacing:.2px;
+  line-height:1.06;
+}
+.lead-note,.dev-data{
+  margin:10px 0 0;
+  color:var(--dim);
+  font-size:14px;
+  line-height:1.5;
+}
+.ed-text{
+  color:var(--dim);
+  max-width:660px;
+  margin:0 0 14px;
+  font-size:18px;
+  line-height:1.8;
+}
+.dev-texto{
+  border-left:2px solid var(--line);
+  padding-left:clamp(16px,3vw,26px);
+  color:var(--paper);
+  font-size:17px;
+  line-height:1.75;
+}
+.dev-texto p{margin:0 0 14px}
+.dev-texto p:last-child{margin-bottom:0}
+.dev-contador{
+  margin:4px 0 0;
+  color:var(--dim);
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.dev-contador b{color:var(--gold);font-weight:600}
+.ed-divider{
+  height:1px;
+  margin:0;
+  border:0;
+  background:linear-gradient(90deg,#e6b23e00 0%,#e6b23e80 15%,#f6d27af2 50%,#e6b23e80 85%,#e6b23e00 100%);
+}
+
+.stack{display:flex;flex-direction:column;gap:14px}
+.card{
+  background:var(--glass);
+  border:1px solid #ffffff0f;
+  border-radius:14px;
+  padding:20px 22px 22px;
+}
+.card .kicker{margin:0 0 10px}
+.card p:last-child{margin-bottom:0}
+.card h4,.verdade h4{
+  margin:0 0 8px;
+  color:var(--paper);
+  font-size:17px;
+  font-weight:600;
+  line-height:1.35;
+}
+.gold{
+  background:#e6b23e14;
+  border:1px solid var(--line);
+}
+.quote{
+  margin:0;
+  font-size:19px;
+  font-weight:500;
+  line-height:1.45;
+}
+.verse{
+  margin:0;
+  font-size:clamp(22px,2.4vw,28px);
+  font-weight:500;
+  line-height:1.35;
+}
+.muted{color:var(--dim)}
+.gesto{margin:-2px 0 14px;color:var(--gold);font-size:14px;font-weight:600}
+.ref{
+  display:block;
+  margin-top:10px;
+  color:var(--dim);
+  font-size:13px;
+}
+
+.perguntas{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.encontro{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:20px 26px 24px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#e6b23e14;
+}
+.encontro .hora{
+  flex:none;
+  color:var(--gold-hi);
+  font-size:clamp(48px,5vw,72px);
+  font-weight:600;
+  letter-spacing:-2px;
+  line-height:.9;
+  font-variant-numeric:tabular-nums;
+}
+.encontro .info{
+  min-width:0;
+  padding-left:24px;
+  border-left:1px solid var(--line);
+  font-size:17px;
+  line-height:1.45;
+}
+
+.historia{position:relative}
+.pills{
+  position:sticky;
+  top:var(--navbar-height);
+  z-index:30;
+  display:flex;
+  gap:8px;
+  margin:0 -4px;
+  padding:12px 4px;
+  overflow-x:auto;
+  background:#14110ef5;
+  border-bottom:1px solid var(--line);
+  scrollbar-width:none;
+}
+.pills::-webkit-scrollbar{display:none}
+.pills a{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  min-height:40px;
+  padding:0 16px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:#f6f5f1c7;
+  font-size:13px;
+  font-weight:600;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.pills a.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+
+.cena{padding:48px 0 8px;scroll-margin-top:132px}
+.cena h3{
+  margin:6px 0 18px;
+  font-size:clamp(26px,3vw,32px);
+  font-weight:600;
+  line-height:1.15;
+}
+.cena p{font-size:17px;line-height:1.75}
+.fala{font-weight:500}
+
+.semana-grade{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  background:var(--glass);
+  border:1px solid #ffffff0f;
+  border-radius:14px;
+  overflow:hidden;
+}
+.semana-coluna{padding:18px 20px 22px}
+.semana-coluna + .semana-coluna{border-left:1px solid var(--fio)}
+.semana-coluna h4{margin:0 0 8px;font-size:17px;font-weight:600}
+.semana-coluna p{margin:0;color:var(--dim);font-size:15px;line-height:1.55}
+
+.lista{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.lista li{display:flex;align-items:center;gap:12px;font-size:15px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
+.dot.o{background:transparent;border:2px solid var(--gold)}
+
+.oracao{display:none;margin-top:14px}
+.oracao.aberta{display:block}
+.dicas{margin-top:8px;color:var(--dim);font-size:15px;line-height:1.7}
+.dicas ul{margin:0;padding-left:18px}
+.dicas li{margin-bottom:8px}
+.dicas strong{color:var(--paper);font-weight:600}
+
+/* Footer */
+.rodape{
+  margin-top:24px;
+  padding:48px 7.5% 28px;
+  background:#000;
+  border-top:1px solid var(--line);
+  color:var(--paper);
+}
+.rod-grade{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1.2fr;
+  gap:36px;
+}
+.rod-logo img{width:170px;height:auto}
+.rod-lema{max-width:260px;margin:16px 0 0;color:var(--dim);font-size:15px;line-height:1.6}
+.rod-coluna h2{
+  margin:0 0 16px;
+  color:var(--gold);
+  font-size:14px;
+  font-weight:600;
+}
+.rod-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.rod-lista a{color:#f6f5f1bd;font-size:15px;text-decoration:none}
+.rod-lista a:hover{color:var(--gold)}
+.rod-endereco{margin:0;color:#f6f5f1bd;font-size:15px;line-height:1.6}
+.rod-base{
+  margin-top:36px;
+  padding-top:18px;
+  border-top:1px solid var(--fio);
+  color:var(--dim);
+  font-size:13px;
+}
+
+.topo{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:40;
+  width:46px;height:46px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:#0b0b0cf2;
+  color:var(--gold);
+  font-size:18px;
+  cursor:pointer;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .2s,visibility .2s,transform .15s;
+}
+.topo.on{opacity:1;visibility:visible}
+.topo:hover{transform:translateY(-2px);color:var(--gold-hi)}
+
+.aula-irma{margin:22px 0 0;font-size:14px}
+.aula-irma a{color:var(--gold);font-weight:600;letter-spacing:.3px;text-decoration:none}
+.aula-irma a:hover{color:var(--gold-hi)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn,.navbar__cta,.topo{transition:none}
+}
+
+@media (max-width:1024px){
+  .navbar{padding:0 5%;gap:12px}
+  .navbar__nav,.navbar__cta{display:none}
+  .navbar__toggle{display:flex}
+  .navbar__drawer{display:flex}
+  .ed{grid-template-columns:1fr;gap:18px;padding:40px 0}
+  .lead-col h3{font-size:30px}
+  .semana-grade{grid-template-columns:1fr}
+  .semana-coluna + .semana-coluna{border-left:0;border-top:1px solid var(--fio)}
+  .rod-grade{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:540px){
+  .section-home h1{font-size:2.75rem}
+  .section-home h4{margin-top:1.125rem;font-size:1.125rem}
+  .section-home .lede{margin-top:.625rem;font-size:.9375rem}
+  .cta-row{flex-wrap:nowrap;gap:8px;width:100%;padding:0 4px}
+  .cta-row .btn{flex:1 1 0;min-width:0;padding:13px 10px;font-size:14px}
+  .encontro{gap:16px;padding:16px 16px 18px}
+  .encontro .info{padding-left:16px}
+  .logo img{height:46px}
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar__progress" id="progress"></div>
+  <div class="logo">
+    <a href="#inicio" aria-label="Início da aula">
+      <img src="assets/logo.png" alt="Igreja Nova Vida de Botafogo">
+    </a>
+  </div>
+  <nav class="navbar__nav" aria-label="Partes da aula">
+    <ul class="navbar__menu">
+      <li><a href="#inicio" data-t="inicio">Início</a></li>
+      <li><a href="#introducao" data-t="introducao">Introdução</a></li>
+      <li><a href="#desenvolvimento" data-t="desenvolvimento">História</a></li>
+      <li><a href="#conclusao" data-t="conclusao">Conclusão</a></li>
+    </ul>
+  </nav>
+  <a class="navbar__cta" href="#versiculo">João 21:17</a>
+  <button type="button" class="navbar__toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="navbar__overlay" hidden></div>
+<nav id="menu-mobile" class="navbar__drawer" aria-label="Menu principal">
+  <div class="navbar__drawer-top">
+    <span class="navbar__drawer-title">Menu</span>
+    <button type="button" class="navbar__drawer-close" aria-label="Fechar menu"><span></span><span></span></button>
+  </div>
+  <a class="navbar__drawer-cta" href="#versiculo">Versículo-chave</a>
+  <ul class="navbar__drawer-list">
+    <li><a href="#inicio" data-t="inicio">Início</a></li>
+    <li><a href="#introducao" data-t="introducao">Introdução</a></li>
+    <li><a href="#desenvolvimento" data-t="desenvolvimento">História</a></li>
+    <li><a href="#conclusao" data-t="conclusao">Conclusão</a></li>
+    <li><a href="index.html">Aula · José</a></li>
+  </ul>
+  <blockquote class="navbar__drawer-verso">
+    <p>Senhor, tu sabes todas as coisas; tu sabes que te amo.</p>
+    <cite>João 21:17</cite>
+  </blockquote>
+</nav>
+
+<section class="section-home" id="inicio">
+  <div class="text">
+    <span class="kicker">Escola bíblica · juniores</span>
+    <h1>Pedro</h1>
+    <h4>Falhar e ter uma segunda chance</h4>
+    <p class="lede">Aula para 9 a 12 anos · João 18 e 21 · 60 minutos</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="#introducao">Introdução</a>
+      <a class="btn btn-ghost" href="#desenvolvimento">História</a>
+      <a class="btn btn-ghost" href="#conclusao">Conclusão</a>
+    </div>
+    <p class="aula-irma"><a href="index.html">Aula anterior · José</a></p>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <section class="ed" id="versiculo">
+    <div class="lead-col">
+      <span class="kicker">Versículo-chave</span>
+      <h3>A frase que Pedro conseguiu dizer</h3>
+      <p class="dev-contador">João 21:17</p>
+    </div>
+    <div class="dev-texto">
+      <p class="verse">Senhor, tu sabes todas as coisas; tu sabes que te amo.</p>
+    </div>
+  </section>
+  <hr class="ed-divider">
+
+  <section class="ed" id="introducao">
+    <div class="lead-col">
+      <span class="kicker">Parte 1 · 10 min</span>
+      <h3>Antes da história</h3>
+      <p class="lead-note">Duas perguntas para escrever no quadro e retomar no final. Na aula de José, o tema foi perdoar. Hoje é ser perdoado.</p>
+    </div>
+    <div class="stack">
+      <article class="card">
+        <span class="kicker">Quebra-gelo · “Eu nunca faria isso”</span>
+        <p class="quote">Já aconteceu de você falar “eu nunca faria isso” e, pouco depois, fazer? Como você se sentiu quando percebeu?</p>
+        <p class="muted" style="margin-top:12px">Deixe 3 ou 4 crianças responderem. Não corrija nem complete a história de ninguém. O objetivo é elas reconhecerem a vergonha, aquela vontade de sumir.</p>
+      </article>
+      <article class="card">
+        <span class="kicker">Apresentação do tema · mostre a fogueira</span>
+        <p>Hoje a história acontece em volta de uma fogueira. Duas vezes. Na primeira, um amigo de Jesus faz uma coisa da qual vai ter muita vergonha. Na segunda, Jesus acende outra fogueira e chama esse amigo para sentar de novo. José nos ensinou a perdoar quem nos feriu. Pedro nos ensina o outro lado: o que fazer quando o errado fomos nós.</p>
+      </article>
+      <div class="perguntas">
+        <article class="encontro">
+          <span class="hora">1</span>
+          <div class="info">Se Pedro amava Jesus, por que ele disse que não o conhecia?</div>
+        </article>
+        <article class="encontro">
+          <span class="hora">2</span>
+          <div class="info">Como Jesus devolveu a Pedro a coragem de olhar para ele de novo?</div>
+        </article>
+      </div>
+    </div>
+  </section>
+  <hr class="ed-divider">
+
+  <section class="ed" id="desenvolvimento">
+    <div class="lead-col">
+      <span class="kicker">Parte 2 · 35 min</span>
+      <h3>A história de Pedro</h3>
+      <p class="lead-note">Leia pausadamente. A fogueira volta no meio e no fim. Não pule esse detalhe.</p>
+    </div>
+    <p class="ed-text">Seis cenas, da promessa na mesa até o café na praia. A conversa de aprofundamento vem logo depois.</p>
+  </section>
+
+  <div class="historia">
+  <div class="pills" id="pills">
+    <a href="#cena1">1 · A promessa</a>
+    <a href="#cena2">2 · A espada e o medo</a>
+    <a href="#cena3">3 · A fogueira</a>
+    <a href="#cena4">4 · O galo</a>
+    <a href="#cena5">5 · O café na praia</a>
+    <a href="#cena6">6 · Você me ama?</a>
+    <a href="#conversa">Conversa</a>
+  </div>
+
+  <article class="cena" id="cena1">
+    <span class="kicker">Cena 1 de 6 · João 13:36-38</span>
+    <h3>A promessa</h3>
+    <p>Na última noite antes de ser preso, Jesus está à mesa com os amigos. Ele diz que vai partir, para um lugar aonde eles ainda não podem ir. Pedro não aceita ficar para trás. Ele diz, com toda a força: <em class="fala">“Por ti darei a própria vida.”</em></p>
+    <p>Pedro acredita no que está dizendo. Ele não é do tipo tímido, que inventa coragem. É o amigo que anda na frente, que fala primeiro, que se mete em tudo. Para ele, abandonar Jesus é impossível.</p>
+    <p>Jesus responde com calma, sem ironia e sem raiva: <em class="fala">“Darás a tua vida por mim?”</em> E avisa: <em class="fala">“Jamais cantará o galo, sem que tu me tenhas negado três vezes.”</em> Em palavras de hoje: antes de amanhecer, você vai dizer três vezes que nem me conhece.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">Pedro estava mentindo quando prometeu? Ou ele achava mesmo que nunca ia falhar?</p>
+      <p class="ref">Deixe falarem. Ele achava. Às vezes a gente promete com o coração inteiro, e o medo chega antes da coragem.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena2">
+    <span class="kicker">Cena 2 de 6 · João 18:1-16</span>
+    <h3>A espada e o medo</h3>
+    <p>De madrugada, soldados e guardas chegam ao jardim para prender Jesus. Pedro faz a coisa mais corajosa em que consegue pensar: puxa uma espada e corta a orelha direita de um servo do sumo sacerdote. O nome do homem era Malco.</p>
+    <p>Jesus manda: <em class="fala">“Mete a espada na bainha.”</em> E se deixa prender. Os amigos fogem e se espalham. Pedro não vai embora de vez. Ele segue Jesus de longe, até o pátio da casa do sumo sacerdote. Outro discípulo, que era conhecido daquela casa, fala com a moça que cuida do portão e consegue que Pedro entre.</p>
+    <p>Repare na diferença. Com a espada na mão, Pedro foi para a frente. Sem a espada, no escuro, no meio de gente que podia entregá-lo, a coragem dele encolheu.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">Por que é mais fácil ser valente numa briga do que ser valente quando alguém faz uma pergunta?</p>
+      <p class="ref">Não dê a resposta pronta. A história vai mostrar a pergunta.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena3">
+    <span class="kicker">Cena 3 de 6 · João 18:15-18</span>
+    <h3>A fogueira</h3>
+    <p>Na porta, a moça do portão olha para Pedro e pergunta: <em class="fala">“Não és tu também um dos discípulos deste homem?”</em> Pedro responde: <em class="fala">“Não sou.”</em></p>
+    <p>Lá dentro, o pátio está frio. Os empregados e os guardas acendem uma fogueira de brasas e ficam em volta para se esquentar. Pedro chega perto do fogo. Quer só um pouco de calor. Quer passar despercebido.</p>
+    <p>A primeira negação foi uma frase curta. Não foi um discurso. Foi um susto. Em volta tem gente armada, e Jesus está sendo interrogado ali perto. Pedro escolhe o calor da fogueira e esconde o nome do amigo.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">O que Pedro estava protegendo nessa hora: a própria vida, ou a imagem de corajoso que ele tinha de si mesmo?</p>
+      <p class="ref">As duas coisas cabem. Não transforme o medo dele em piada.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena4">
+    <span class="kicker">Cena 4 de 6 · João 18:25-27</span>
+    <h3>O galo</h3>
+    <p>Pedro continua ali, ao lado do fogo. Perguntam de novo: <em class="fala">“Não és tu também um dos seus discípulos?”</em> Ele nega outra vez.</p>
+    <p>Aí chega um parente de Malco, o homem da orelha cortada. Esse viu Pedro no jardim. Ele pergunta: <em class="fala">“Não te vi eu no jardim com ele?”</em> Pedro nega pela terceira vez.</p>
+    <p>E, na mesma hora, o galo canta.</p>
+    <p>Jesus tinha avisado, e Pedro lembra. Lucas conta que, nesse instante, Jesus se vira e olha para Pedro (Lucas 22:61). Pedro sai do pátio. Mateus e Lucas dizem que ele “chorou amargamente”. Não foi o choro de quem foi pego e quer se explicar. Foi o choro de quem pensa: eu fiz exatamente o que jurei que nunca faria.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">O que pesa mais para Pedro agora: o medo de ser preso, ou a vergonha do que ele acabou de dizer?</p>
+      <p class="ref">Silêncio de alguns segundos. Vergonha é a vontade de que ninguém nos veja.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena5">
+    <span class="kicker">Cena 5 de 6 · João 21:1-14</span>
+    <h3>O café na praia</h3>
+    <p>Dias depois, Jesus já ressuscitou. Pedro voltou a pescar, de noite, com alguns amigos. A noite inteira, a rede volta vazia. De manhã, um homem na praia manda lançar a rede do lado direito do barco. A rede enche tanto que eles mal conseguem puxar.</p>
+    <p>João reconhece: <em class="fala">“É o Senhor!”</em> Pedro estava só com a roupa de trabalho. Ele veste a capa e se joga na água. Não espera o barco, nada até a praia. O homem que se escondeu na fogueira agora vai na frente de todos, na direção de Jesus.</p>
+    <p>Na areia, Jesus já acendeu uma fogueira de brasas. Tem pão. Tem peixe. No texto original, a palavra para essas “brasas” é a mesma da fogueira do pátio, e muitos estudiosos acham que isso é de propósito. Jesus chama: <em class="fala">“Vinde, comei.”</em> Ninguém precisa perguntar quem ele é. Eles sabem.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">Pedro poderia ter ficado no barco, com vergonha. O que ele fez no lugar disso?</p>
+      <p class="ref">Ele foi na direção de Jesus. A vergonha empurra para longe, mas alguma coisa nele ainda puxava para perto.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena6">
+    <span class="kicker">Cena 6 de 6 · João 21:15-19</span>
+    <h3>Você me ama?</h3>
+    <p>Depois de comerem, Jesus fala com Pedro. Ele não faz uma lista dos erros na frente de todo mundo. Não diz “eu avisei”. Pergunta: <em class="fala">“Simão, filho de João, amas-me mais do que estes?”</em> Pedro responde: <em class="fala">“Sim, Senhor, tu sabes que te amo.”</em> Jesus diz: <em class="fala">“Apascenta os meus cordeiros.”</em> (Apascentar é cuidar e alimentar, como faz um pastor.)</p>
+    <p>Jesus pergunta de novo. E de novo. Três vezes, como as três negações junto ao fogo. Na terceira, Pedro fica triste. Não porque Jesus esteja zombando dele, mas porque a pergunta toca bem onde dói. E Pedro dá a resposta mais sincera da vida dele: <em class="fala">“Senhor, tu sabes todas as coisas; tu sabes que te amo.”</em></p>
+    <div class="card gold"><p class="verse">Jesus não finge que as negações não aconteceram. Ele deixa Pedro dizer a verdade no lugar da vergonha.</p></div>
+    <p>A cada resposta, Jesus entrega pessoas para Pedro cuidar. Ser perdoado, aqui, não é ouvir “deixa para lá, você não serve mais”. É ouvir: eu ainda confio em você com gente que eu amo.</p>
+    <p>No fim, Jesus diz a frase que recomeça o caminho: <em class="fala">“Segue-me.”</em> O caminho à frente ainda vai ser difícil, e Jesus não esconde isso. Mesmo assim, ele não manda Pedro embora.</p>
+  </article>
+
+  <section class="ed" id="conversa">
+    <div class="lead-col">
+      <span class="kicker">Após a história</span>
+      <h3>Conversa de aprofundamento</h3>
+      <p class="lead-note">Escreva as três frases no quadro. Se a turma veio da aula de José, use a terceira para ligar as duas.</p>
+    </div>
+    <div class="stack">
+      <article class="card">
+        <h4>“Amar não impediu Pedro de falhar.”</h4>
+        <p>A vergonha mente uma coisa: “se você errou, é porque nunca amou de verdade.” Pedro amava. E, com medo, negou. O erro mostra que ele foi frágil naquela hora. Não prova que a promessa era mentira.</p>
+      </article>
+      <article class="card">
+        <h4>“Jesus acende a fogueira de novo.”</h4>
+        <p>A segunda fogueira não é para esfregar o erro na cara de Pedro. É para ele não precisar fugir da lembrança. O perdão encontra a gente no lugar da vergonha, não num lugar onde a gente finge que nada aconteceu.</p>
+      </article>
+      <article class="card">
+        <h4>“Quem é perdoado recebe confiança.”</h4>
+        <p>“Cuide das minhas ovelhas” é Jesus dizendo que Pedro ainda tem um lugar. José escolheu perdoar. Pedro precisou deixar ser perdoado. As duas coisas são difíceis, e uma não substitui a outra.</p>
+      </article>
+    </div>
+  </section>
+  </div>
+  <hr class="ed-divider">
+
+  <section class="ed" id="conclusao">
+    <div class="lead-col">
+      <span class="kicker">Parte 3 · 15 min</span>
+      <h3>Fechando a aula</h3>
+      <p class="lead-note">Volte às duas perguntas do começo antes das atividades.</p>
+    </div>
+    <div class="stack">
+      <article class="card">
+        <span class="kicker">Voltando à pergunta 1</span>
+        <h4>Se Pedro amava Jesus, por que disse que não o conhecia?</h4>
+        <p class="muted">Pergunte à turma o que acham agora. Depois diga:</p>
+        <p class="quote">“Porque, naquela hora, o medo falou mais alto do que a promessa. Pedro não deixou de amar. Ele teve medo. Jesus já sabia que isso ia acontecer, e mesmo assim não o largou.”</p>
+      </article>
+      <article class="card">
+        <span class="kicker">Voltando à pergunta 2</span>
+        <h4>Como Jesus devolveu a coragem de olhar de novo?</h4>
+        <p class="quote">“Não foi fingindo que a negativa não existiu. Foi chamando para comer, perguntando três vezes, deixando Pedro responder, e confiando nele outra vez. A vergonha diz ‘se esconde’. Jesus diz ‘vem’ e ‘siga-me’.”</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="semana-grade" aria-label="Atividades de fechamento">
+    <article class="semana-coluna">
+      <h4>Minha fogueira</h4>
+      <p class="kicker" style="margin-top:0">7 min</p>
+      <p>Cada criança marca três pontos. Ninguém é obrigado a mostrar nem a escrever o nome da outra pessoa.</p>
+      <ul class="lista">
+        <li><span class="dot"></span>Uma vez que eu falhei com alguém</li>
+        <li><span class="dot"></span>O que eu senti depois</li>
+        <li><span class="dot o"></span>O que eu gostaria de ouvir agora</li>
+      </ul>
+    </article>
+    <article class="semana-coluna">
+      <h4>Mural da vergonha</h4>
+      <p class="kicker" style="margin-top:0">3 min</p>
+      <p>Cada criança escreve num post-it, sem nome, uma coisa de que tem vergonha. Cole todos no mural e leia alguns em silêncio. Na aula de José o post-it era sobre perdoar. Hoje é sobre a vergonha de quem errou.</p>
+    </article>
+    <article class="semana-coluna">
+      <h4>Desafio da semana</h4>
+      <p class="kicker" style="margin-top:0">Para casa</p>
+      <p>Escolha uma falha recente. Dê um passo pequeno: pedir desculpas, contar para Deus, ou conversar com um adulto de confiança. Se a vergonha ainda for grande demais para dizer em voz alta, escrever já conta.</p>
+    </article>
+  </div>
+
+  <div style="padding:28px 0 8px">
+    <button class="btn btn-gold" id="btnOracao" type="button" aria-expanded="false" aria-controls="oracao">Oração final</button>
+    <div class="oracao" id="oracao">
+      <article class="card gold">
+        <p class="quote">“Senhor, tu sabes quando a gente promete e falha. Obrigado porque não nos mandas embora. Ajuda-nos a chegar perto, como Pedro, e a acreditar que ainda podes confiar em nós. Amém.”</p>
+        <p class="ref">Sugestão: adapte com suas palavras.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="dicas">
+    <span class="kicker">Dicas rápidas</span>
+    <ul>
+      <li><strong>Não use a história para expor alguém.</strong> Esta aula fala de vergonha. Não aponte uma criança que “fez igual ao Pedro”.</li>
+      <li><strong>Não force o post-it.</strong> Quem não quiser escrever, fica em silêncio. Isso também é participar.</li>
+      <li><strong>Evite “Jesus esqueceu”.</strong> O texto mostra que ele trata do assunto. Prefira: “Jesus não usa o erro para humilhar.”</li>
+      <li><strong>Se alguém contar algo grave</strong> (medo em casa, uma culpa grande demais), não resolva no grupo. Converse em particular depois.</li>
+      <li><strong>Turma agitada?</strong> Encenem só as três perguntas, sentados, com voz baixa. Dois voluntários bastam.</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer class="rodape">
+  <div class="rod-grade">
+    <div class="rod-marca">
+      <a class="rod-logo" href="#inicio" aria-label="Voltar ao início">
+        <img src="assets/logo.png" alt="Igreja Nova Vida de Botafogo">
+      </a>
+      <p class="rod-lema">Não apenas uma Igreja, mas uma Família!</p>
+    </div>
+    <div class="rod-coluna">
+      <h2>Aula</h2>
+      <ul class="rod-lista">
+        <li><a href="#introducao">Introdução · 10 min</a></li>
+        <li><a href="#desenvolvimento">História · 35 min</a></li>
+        <li><a href="#conclusao">Conclusão · 15 min</a></li>
+        <li><a href="#versiculo">João 21:17</a></li>
+        <li><a href="index.html">Aula anterior · José</a></li>
+      </ul>
+    </div>
+    <div class="rod-coluna">
+      <h2>Materiais</h2>
+      <p class="rod-endereco">Um desenho ou uma foto de fogueira, Bíblias, papel e canetas, post-its e uma folha grande para o mural.</p>
+    </div>
+  </div>
+  <p class="rod-base">Aula para juniores · Pedro · João 18 e 21 · Igreja Nova Vida de Botafogo</p>
+</footer>
+
+<button class="topo" id="topo" type="button" aria-label="Voltar ao topo">↑</button>
+
+<script>
+(function(){
+  var links = document.querySelectorAll('[data-t]');
+  var ids = ['inicio','introducao','desenvolvimento','conclusao'];
+  var pills = document.querySelectorAll('#pills a');
+  var cenas = ['cena1','cena2','cena3','cena4','cena5','cena6','conversa'];
+  var bar = document.getElementById('progress');
+  var topo = document.getElementById('topo');
+
+  function marcaParte(){
+    var y = window.scrollY + window.innerHeight * 0.28;
+    var atual = ids[0];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= y) atual = id;
+    });
+    links.forEach(function(a){ a.classList.toggle('on', a.dataset.t === atual); });
+  }
+  function marcaCena(){
+    var y = window.scrollY + 150;
+    var atual = null;
+    cenas.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= y) atual = id;
+    });
+    var dev = document.getElementById('desenvolvimento');
+    var fim = document.getElementById('conclusao');
+    var noDev = dev && fim && dev.offsetTop <= window.scrollY + 150 && fim.offsetTop > window.scrollY + 150;
+    pills.forEach(function(a){
+      var on = noDev && a.getAttribute('href') === '#' + atual;
+      a.classList.toggle('on', on);
+      if (on) {
+        var box = a.parentNode;
+        box.scrollLeft = a.offsetLeft - box.clientWidth / 2 + a.clientWidth / 2;
+      }
+    });
+  }
+  function progresso(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    topo.classList.toggle('on', window.scrollY > 500);
+  }
+  function tick(){ marcaParte(); marcaCena(); progresso(); }
+  var pendente = false;
+  window.addEventListener('scroll', function(){
+    if (pendente) return;
+    pendente = true;
+    requestAnimationFrame(function(){ tick(); pendente = false; });
+  }, {passive:true});
+  window.addEventListener('resize', tick);
+  tick();
+
+  topo.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  var btn = document.getElementById('btnOracao');
+  var box = document.getElementById('oracao');
+  btn.addEventListener('click', function(){
+    var aberta = box.classList.toggle('aberta');
+    btn.setAttribute('aria-expanded', aberta ? 'true' : 'false');
+    btn.textContent = aberta ? 'Ocultar oração' : 'Oração final';
+  });
+
+  var toggle = document.querySelector('.navbar__toggle');
+  var drawer = document.getElementById('menu-mobile');
+  var overlay = document.querySelector('.navbar__overlay');
+  var fechar = document.querySelector('.navbar__drawer-close');
+  function setMenu(open){
+    drawer.classList.toggle('is-open', open);
+    overlay.classList.toggle('is-open', open);
+    overlay.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    document.body.classList.toggle('menu-open', open);
+  }
+  toggle.addEventListener('click', function(){ setMenu(!drawer.classList.contains('is-open')); });
+  fechar.addEventListener('click', function(){ setMenu(false); });
+  overlay.addEventListener('click', function(){ setMenu(false); });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setMenu(false); });
+  });
+})();
+</script>
+</body>
+</html>
