@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14110e">
+<title>José · Aula EBI · Igreja Nova Vida de Botafogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --gold:#e6b23e;
+  --gold-hi:#f6d27a;
+  --ink:#0b0b0c;
+  --paper:#f6f5f1;
+  --dim:#f6f5f19e;
+  --line:#e6b23e42;
+  --brand:#14110e;
+  --glass:#1414168c;
+  --fio:#ffffff14;
+  --navbar-height:70px;
+  --sans:"Montserrat",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--brand);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--sans);font-weight:500;margin:0}
+p{margin:0 0 14px}
+button,a{font-family:inherit}
+
+/* Navbar */
+.navbar{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:5000;
+  height:var(--navbar-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  padding:0 7.5%;
+  color:var(--paper);
+  background:#0b0b0cf2;
+  border-bottom:1px solid var(--line);
+  box-shadow:0 8px 24px #00000059;
+}
+.navbar__progress{
+  position:absolute;
+  left:0;bottom:0;
+  height:2px;
+  width:0;
+  background:linear-gradient(90deg,var(--gold),var(--gold-hi));
+  pointer-events:none;
+}
+.logo{flex-shrink:0}
+.logo a{display:flex;align-items:center}
+.logo img{height:52px;width:auto}
+.navbar__nav{flex:1}
+.navbar__menu{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.navbar__menu a{
+  position:relative;
+  display:inline-block;
+  padding:8px 0;
+  color:#f6f5f1c7;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:color .25s;
+}
+.navbar__menu a::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:1px;
+  background:var(--gold);
+  transform:scaleX(0);
+  transform-origin:50%;
+  transition:transform .25s;
+}
+.navbar__menu a:hover,.navbar__menu a.on{color:var(--gold)}
+.navbar__menu a:hover::after,.navbar__menu a.on::after{transform:scaleX(1)}
+.navbar__cta{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--gold);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.4px;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background .2s,transform .15s;
+}
+.navbar__cta:hover{background:var(--gold-hi);transform:translateY(-1px)}
+.navbar__toggle{
+  display:none;
+  width:48px;height:48px;
+  margin:0 -12px 0 0;
+  padding:0;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:var(--paper);
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+}
+.navbar__toggle span{
+  display:block;
+  width:22px;height:2px;
+  border-radius:2px;
+  background:currentColor;
+}
+
+.navbar__overlay{
+  position:fixed;
+  inset:0;
+  z-index:5005;
+  background:#00000080;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s,visibility .3s;
+}
+.navbar__overlay.is-open{opacity:1;visibility:visible}
+.navbar__drawer{
+  display:none;
+  position:fixed;
+  top:0;right:0;bottom:0;
+  z-index:5010;
+  width:min(320px,80vw);
+  flex-direction:column;
+  background:var(--ink);
+  border-left:1px solid var(--line);
+  box-shadow:-18px 0 40px #0000008c;
+  transform:translateX(100%);
+  visibility:hidden;
+  transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear .32s;
+  overflow-y:auto;
+}
+.navbar__drawer.is-open{
+  transform:translateX(0);
+  visibility:visible;
+  transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s;
+}
+.navbar__drawer-top{
+  height:var(--navbar-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px 0 22px;
+  border-bottom:1px solid var(--fio);
+}
+.navbar__drawer-title{
+  color:var(--gold);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.navbar__drawer-close{
+  width:48px;height:48px;
+  border:0;border-radius:12px;
+  background:transparent;
+  color:var(--paper);
+  position:relative;
+  cursor:pointer;
+}
+.navbar__drawer-close span{
+  position:absolute;
+  left:12px;top:23px;
+  width:24px;height:2px;
+  border-radius:2px;
+  background:currentColor;
+}
+.navbar__drawer-close span:first-child{transform:rotate(45deg)}
+.navbar__drawer-close span:last-child{transform:rotate(-45deg)}
+.navbar__drawer-cta{
+  margin:18px 22px 8px;
+  display:block;
+  padding:12px 18px;
+  border-radius:999px;
+  background:var(--gold);
+  color:var(--ink);
+  font-weight:600;
+  text-align:center;
+  text-decoration:none;
+}
+.navbar__drawer-list{list-style:none;margin:8px 0 0;padding:0}
+.navbar__drawer-list a{
+  display:block;
+  padding:16px 22px;
+  border-bottom:1px solid var(--fio);
+  color:var(--paper);
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  text-decoration:none;
+}
+.navbar__drawer-list a.on{color:var(--gold)}
+.navbar__drawer-verso{
+  margin:auto 22px 28px;
+  padding-top:22px;
+  color:var(--dim);
+  font-size:14px;
+  line-height:1.6;
+}
+.navbar__drawer-verso p{margin:0}
+.navbar__drawer-verso cite{
+  display:block;
+  margin-top:8px;
+  color:var(--gold);
+  font-style:normal;
+  font-size:12px;
+  letter-spacing:1px;
+}
+body.menu-open{overflow:hidden}
+
+/* Hero */
+.section-home{
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:var(--navbar-height) 7.5% 1.5rem;
+  color:#f5f5f5;
+  background:
+    linear-gradient(#0003,#000000b3),
+    url("assets/hero.webp") center/cover no-repeat;
+  background-color:#14110e;
+}
+.section-home .text{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:min(920px,100%);
+}
+.kicker{
+  display:block;
+  margin:12px 0;
+  color:var(--gold);
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.section-home h1{
+  margin:0;
+  font-size:3.5rem;
+  font-weight:700;
+  line-height:1.12;
+  color:#f5f5f5;
+}
+.section-home h4{
+  margin:1.5rem 0 0;
+  font-size:1.375rem;
+  font-weight:500;
+  line-height:1.4;
+}
+.section-home .lede{
+  margin:.75rem 0 0;
+  color:#f5f5f5cc;
+  font-size:1.0625rem;
+  font-weight:400;
+  line-height:1.5;
+}
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  margin-top:32px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:13px 22px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:16px;
+  font-weight:500;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform .15s,background .2s,color .2s,border-color .2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-hi)}
+.btn-ghost{
+  background:#0b0b0c66;
+  border-color:var(--line);
+  color:var(--paper);
+  backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{background:#0b0b0c99;border-color:var(--gold);color:var(--gold)}
+
+/* Editorial */
+.wrap{width:min(1180px,85%);margin:0 auto}
+.ed{
+  display:grid;
+  grid-template-columns:.42fr 1fr;
+  align-items:start;
+  gap:34px;
+  padding:64px 0;
+  scroll-margin-top:calc(var(--navbar-height) + 12px);
+}
+.lead-col h3{
+  margin-top:12px;
+  font-size:36px;
+  font-weight:500;
+  letter-spacing:.2px;
+  line-height:1.06;
+}
+.lead-note,.dev-data{
+  margin:10px 0 0;
+  color:var(--dim);
+  font-size:14px;
+  line-height:1.5;
+}
+.ed-text{
+  color:var(--dim);
+  max-width:660px;
+  margin:0 0 14px;
+  font-size:18px;
+  line-height:1.8;
+}
+.dev-texto{
+  border-left:2px solid var(--line);
+  padding-left:clamp(16px,3vw,26px);
+  color:var(--paper);
+  font-size:17px;
+  line-height:1.75;
+}
+.dev-texto p{margin:0 0 14px}
+.dev-texto p:last-child{margin-bottom:0}
+.dev-contador{
+  margin:4px 0 0;
+  color:var(--dim);
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.dev-contador b{color:var(--gold);font-weight:600}
+.ed-divider{
+  height:1px;
+  margin:0;
+  border:0;
+  background:linear-gradient(90deg,#e6b23e00 0%,#e6b23e80 15%,#f6d27af2 50%,#e6b23e80 85%,#e6b23e00 100%);
+}
+
+.stack{display:flex;flex-direction:column;gap:14px}
+.card{
+  background:var(--glass);
+  border:1px solid #ffffff0f;
+  border-radius:14px;
+  padding:20px 22px 22px;
+}
+.card .kicker{margin:0 0 10px}
+.card p:last-child{margin-bottom:0}
+.card h4,.verdade h4{
+  margin:0 0 8px;
+  color:var(--paper);
+  font-size:17px;
+  font-weight:600;
+  line-height:1.35;
+}
+.gold{
+  background:#e6b23e14;
+  border:1px solid var(--line);
+}
+.quote{
+  margin:0;
+  font-size:19px;
+  font-weight:500;
+  line-height:1.45;
+}
+.verse{
+  margin:0;
+  font-size:clamp(22px,2.4vw,28px);
+  font-weight:500;
+  line-height:1.35;
+}
+.muted{color:var(--dim)}
+.gesto{margin:-2px 0 14px;color:var(--gold);font-size:14px;font-weight:600}
+.ref{
+  display:block;
+  margin-top:10px;
+  color:var(--dim);
+  font-size:13px;
+}
+
+.perguntas{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.encontro{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:20px 26px 24px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#e6b23e14;
+}
+.encontro .hora{
+  flex:none;
+  color:var(--gold-hi);
+  font-size:clamp(48px,5vw,72px);
+  font-weight:600;
+  letter-spacing:-2px;
+  line-height:.9;
+  font-variant-numeric:tabular-nums;
+}
+.encontro .info{
+  min-width:0;
+  padding-left:24px;
+  border-left:1px solid var(--line);
+  font-size:17px;
+  line-height:1.45;
+}
+
+.historia{position:relative}
+.pills{
+  position:sticky;
+  top:var(--navbar-height);
+  z-index:30;
+  display:flex;
+  gap:8px;
+  margin:0 -4px;
+  padding:12px 4px;
+  overflow-x:auto;
+  background:#14110ef5;
+  border-bottom:1px solid var(--line);
+  scrollbar-width:none;
+}
+.pills::-webkit-scrollbar{display:none}
+.pills a{
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  min-height:40px;
+  padding:0 16px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:#f6f5f1c7;
+  font-size:13px;
+  font-weight:600;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.pills a.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+
+.cena{padding:48px 0 8px;scroll-margin-top:132px}
+.cena h3{
+  margin:6px 0 18px;
+  font-size:clamp(26px,3vw,32px);
+  font-weight:600;
+  line-height:1.15;
+}
+.cena p{font-size:17px;line-height:1.75}
+.fala{font-weight:500}
+
+.semana-grade{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  background:var(--glass);
+  border:1px solid #ffffff0f;
+  border-radius:14px;
+  overflow:hidden;
+}
+.semana-coluna{padding:18px 20px 22px}
+.semana-coluna + .semana-coluna{border-left:1px solid var(--fio)}
+.semana-coluna h4{margin:0 0 8px;font-size:17px;font-weight:600}
+.semana-coluna p{margin:0;color:var(--dim);font-size:15px;line-height:1.55}
+
+.lista{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.lista li{display:flex;align-items:center;gap:12px;font-size:15px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
+.dot.o{background:transparent;border:2px solid var(--gold)}
+
+.oracao{display:none;margin-top:14px}
+.oracao.aberta{display:block}
+.dicas{margin-top:8px;color:var(--dim);font-size:15px;line-height:1.7}
+.dicas ul{margin:0;padding-left:18px}
+.dicas li{margin-bottom:8px}
+.dicas strong{color:var(--paper);font-weight:600}
+
+/* Footer */
+.rodape{
+  margin-top:24px;
+  padding:48px 7.5% 28px;
+  background:#000;
+  border-top:1px solid var(--line);
+  color:var(--paper);
+}
+.rod-grade{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1.2fr;
+  gap:36px;
+}
+.rod-logo img{width:170px;height:auto}
+.rod-lema{max-width:260px;margin:16px 0 0;color:var(--dim);font-size:15px;line-height:1.6}
+.rod-coluna h2{
+  margin:0 0 16px;
+  color:var(--gold);
+  font-size:14px;
+  font-weight:600;
+}
+.rod-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.rod-lista a{color:#f6f5f1bd;font-size:15px;text-decoration:none}
+.rod-lista a:hover{color:var(--gold)}
+.rod-endereco{margin:0;color:#f6f5f1bd;font-size:15px;line-height:1.6}
+.rod-base{
+  margin-top:36px;
+  padding-top:18px;
+  border-top:1px solid var(--fio);
+  color:var(--dim);
+  font-size:13px;
+}
+
+.topo{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:40;
+  width:46px;height:46px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:#0b0b0cf2;
+  color:var(--gold);
+  font-size:18px;
+  cursor:pointer;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .2s,visibility .2s,transform .15s;
+}
+.topo.on{opacity:1;visibility:visible}
+.topo:hover{transform:translateY(-2px);color:var(--gold-hi)}
+
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn,.navbar__cta,.topo{transition:none}
+}
+
+@media (max-width:1024px){
+  .navbar{padding:0 5%;gap:12px}
+  .navbar__nav,.navbar__cta{display:none}
+  .navbar__toggle{display:flex}
+  .navbar__drawer{display:flex}
+  .ed{grid-template-columns:1fr;gap:18px;padding:40px 0}
+  .lead-col h3{font-size:30px}
+  .semana-grade{grid-template-columns:1fr}
+  .semana-coluna + .semana-coluna{border-left:0;border-top:1px solid var(--fio)}
+  .rod-grade{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:540px){
+  .section-home h1{font-size:2.75rem}
+  .section-home h4{margin-top:1.125rem;font-size:1.125rem}
+  .section-home .lede{margin-top:.625rem;font-size:.9375rem}
+  .cta-row{flex-wrap:nowrap;gap:8px;width:100%;padding:0 4px}
+  .cta-row .btn{flex:1 1 0;min-width:0;padding:13px 10px;font-size:14px}
+  .encontro{gap:16px;padding:16px 16px 18px}
+  .encontro .info{padding-left:16px}
+  .logo img{height:46px}
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar__progress" id="progress"></div>
+  <div class="logo">
+    <a href="#inicio" aria-label="Início da aula">
+      <img src="assets/logo.png" alt="Igreja Nova Vida de Botafogo">
+    </a>
+  </div>
+  <nav class="navbar__nav" aria-label="Partes da aula">
+    <ul class="navbar__menu">
+      <li><a href="#inicio" data-t="inicio">Início</a></li>
+      <li><a href="#introducao" data-t="introducao">Introdução</a></li>
+      <li><a href="#desenvolvimento" data-t="desenvolvimento">História</a></li>
+      <li><a href="#conclusao" data-t="conclusao">Conclusão</a></li>
+    </ul>
+  </nav>
+  <a class="navbar__cta" href="#versiculo">Gênesis 50:20</a>
+  <button type="button" class="navbar__toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="navbar__overlay" hidden></div>
+<nav id="menu-mobile" class="navbar__drawer" aria-label="Menu principal">
+  <div class="navbar__drawer-top">
+    <span class="navbar__drawer-title">Menu</span>
+    <button type="button" class="navbar__drawer-close" aria-label="Fechar menu"><span></span><span></span></button>
+  </div>
+  <a class="navbar__drawer-cta" href="#versiculo">Versículo-chave</a>
+  <ul class="navbar__drawer-list">
+    <li><a href="#inicio" data-t="inicio">Início</a></li>
+    <li><a href="#introducao" data-t="introducao">Introdução</a></li>
+    <li><a href="#desenvolvimento" data-t="desenvolvimento">História</a></li>
+    <li><a href="#conclusao" data-t="conclusao">Conclusão</a></li>
+  </ul>
+  <blockquote class="navbar__drawer-verso">
+    <p>Vocês planejaram o mal contra mim, mas Deus transformou em bem.</p>
+    <cite>Gênesis 50:20</cite>
+  </blockquote>
+</nav>
+
+<section class="section-home" id="inicio">
+  <div class="text">
+    <span class="kicker">Escola bíblica · juniores</span>
+    <h1>José</h1>
+    <h4>O Deus que escreve certo por linhas tortas</h4>
+    <p class="lede">Aula para 9 a 12 anos · Gênesis 37–50 · 60 minutos</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="#introducao">Introdução</a>
+      <a class="btn btn-ghost" href="#desenvolvimento">História</a>
+      <a class="btn btn-ghost" href="#conclusao">Conclusão</a>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <section class="ed" id="versiculo">
+    <div class="lead-col">
+      <span class="kicker">Versículo-chave</span>
+      <h3>Palavra que fecha a história</h3>
+      <p class="dev-contador">Gênesis 50:20</p>
+    </div>
+    <div class="dev-texto">
+      <p class="verse">Vocês planejaram o mal contra mim, mas Deus transformou em bem.</p>
+    </div>
+  </section>
+  <hr class="ed-divider">
+
+  <section class="ed" id="introducao">
+    <div class="lead-col">
+      <span class="kicker">Parte 1 · 10 min</span>
+      <h3>Antes da história</h3>
+      <p class="lead-note">Duas perguntas para escrever no quadro e retomar no final.</p>
+    </div>
+    <div class="stack">
+      <article class="card">
+        <span class="kicker">Quebra-gelo · “A pior semana”</span>
+        <p class="quote">Já aconteceu algo injusto com você? Algo que não foi sua culpa e que você não entendeu por quê?</p>
+        <p class="muted" style="margin-top:12px">Deixe 3 ou 4 crianças responderem. Não corrija nem resolva nada agora. O objetivo é fazê-las sentir que o tema é delas.</p>
+      </article>
+      <article class="card">
+        <span class="kicker">Apresentação do tema · mostre o manto</span>
+        <p>Hoje vamos conhecer alguém cuja vida parecia só dar errado. Ele foi traído pela própria família, vendido, acusado de algo que não fez, preso e esquecido. Mas no final ele descobriu algo enorme sobre Deus. E o que ele descobriu pode mudar a forma como você enxerga os seus próprios dias ruins.</p>
+      </article>
+      <div class="perguntas">
+        <article class="encontro">
+          <span class="hora">1</span>
+          <div class="info">Se Deus estava com José, por que coisas ruins aconteceram com ele?</div>
+        </article>
+        <article class="encontro">
+          <span class="hora">2</span>
+          <div class="info">Como José conseguiu perdoar?</div>
+        </article>
+      </div>
+    </div>
+  </section>
+  <hr class="ed-divider">
+
+  <section class="ed" id="desenvolvimento">
+    <div class="lead-col">
+      <span class="kicker">Parte 2 · 35 min</span>
+      <h3>A história de José</h3>
+      <p class="lead-note">Leia pausadamente, com o manto na mão, e faça as pausas indicadas.</p>
+    </div>
+    <p class="ed-text">Seis cenas, da casa do pai até a frase que explica a vida inteira dele. A conversa de aprofundamento vem logo depois.</p>
+  </section>
+
+  <div class="historia">
+  <div class="pills" id="pills">
+    <a href="#cena1">1 · Filho preferido</a>
+    <a href="#cena2">2 · O poço</a>
+    <a href="#cena3">3 · Escravo, não abandonado</a>
+    <a href="#cena4">4 · Do calabouço ao palácio</a>
+    <a href="#cena5">5 · Os irmãos voltam</a>
+    <a href="#cena6">6 · O medo que sobrou</a>
+    <a href="#conversa">Conversa</a>
+  </div>
+
+  <article class="cena" id="cena1">
+    <span class="kicker">Cena 1 de 6</span>
+    <h3>O filho preferido</h3>
+    <p>Há muito tempo, numa terra chamada Canaã, vivia um homem chamado Jacó. Ele tinha doze filhos, mas havia um que ele amava mais do que todos: José, o filho que nasceu quando Jacó já era velho. E Jacó fez algo que, sem querer, causou muita confusão: deu a José um manto lindo, colorido, diferente de tudo o que os irmãos tinham.</p>
+    <p class="gesto">↑ Levante o manto.</p>
+    <p>Imagine como os irmãos se sentiam. Todos usando roupas simples, e José desfilando com aquele manto. Mas o problema não era só a roupa. Era o que ela significava: “O papai gosta mais dele do que de nós.” A Bíblia diz que os irmãos passaram a odiá-lo e não conseguiam nem falar com ele com educação.</p>
+    <p>E José não ajudava muito. Aos dezessete anos, ele teve dois sonhos e resolveu contar para todo mundo. No primeiro, os feixes de trigo dos irmãos se curvavam diante do feixe dele. No segundo, até o sol, a lua e onze estrelas se curvavam diante dele. Os irmãos entenderam na hora: “Você acha que vai mandar em nós?” O ódio só cresceu.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">O que os irmãos fizeram de errado? E José, teve alguma parte nessa confusão?</p>
+      <p class="ref">Deixe falarem. José não era perfeito, mas nada justifica o que vem a seguir.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena2">
+    <span class="kicker">Cena 2 de 6</span>
+    <h3>O poço</h3>
+    <p>Um dia, os irmãos foram cuidar das ovelhas longe de casa, em um lugar chamado Dotã. Jacó mandou José ir até lá ver se estava tudo bem. Quando os irmãos o viram chegando de longe, com o manto colorido, um deles disse: <em class="fala">“Aí vem o sonhador. Vamos acabar com ele.”</em></p>
+    <p>O irmão mais velho, Rúben, não queria que o matassem e sugeriu jogá-lo num poço seco, pensando em voltar depois para tirá-lo de lá. Os irmãos arrancaram o manto de José e o jogaram no buraco fundo. Depois sentaram para comer.</p>
+    <p>Pense nisso: <strong>José gritando lá embaixo, e os irmãos almoçando.</strong></p>
+    <p>Enquanto comiam, viram uma caravana de comerciantes passando. Judá teve uma ideia: “Em vez de matá-lo, vamos vendê-lo.” Venderam o próprio irmão por vinte moedas de prata. José, com dezessete anos, foi levado como escravo para o Egito, um país distante, onde ninguém o conhecia.</p>
+    <p>E os irmãos ainda tiveram a frieza de sujar o manto com sangue de um cabrito e levar para o pai. Jacó reconheceu o manto, achou que um animal selvagem tinha devorado o filho e chorou por muitos dias. Ninguém conseguia consolá-lo.</p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">Como você acha que José se sentiu naquele poço? E depois, dentro da caravana, indo para um país que não conhecia?</p>
+      <p class="ref">Silêncio de alguns segundos. Deixe pesar.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena3">
+    <span class="kicker">Cena 3 de 6</span>
+    <h3>Escravo, mas não abandonado</h3>
+    <p>No Egito, José foi comprado por um oficial do rei chamado Potifar. E aqui acontece algo que a Bíblia faz questão de repetir:</p>
+    <div class="card gold"><p class="verse">“O Senhor estava com José.”</p></div>
+    <p>Ele era escravo, mas tudo o que fazia dava certo. Potifar percebeu e colocou José como responsável por toda a sua casa.</p>
+    <p>Parecia que a vida estava melhorando. Mas a esposa de Potifar queria que José fizesse algo errado, e ele se recusou. Ele disse que não podia fazer isso com seu patrão, e que seria pecado contra Deus. Ela ficou com raiva e inventou uma mentira: acusou José de ter feito algo contra ela. Potifar acreditou e mandou José para a prisão.</p>
+    <p><strong>Veja a injustiça: José fez a coisa certa e foi castigado por isso.</strong></p>
+    <p>Na prisão, a Bíblia diz de novo: “O Senhor estava com José.” Ele ajudou o responsável pela prisão, que passou a confiar nele. Dois funcionários do rei, o copeiro e o padeiro, foram presos e tiveram sonhos estranhos. José, com a ajuda de Deus, explicou o significado. O copeiro seria solto em três dias. José pediu: <em class="fala">“Quando você sair, lembre-se de mim, fale ao rei para me tirar daqui.”</em></p>
+    <p>O copeiro saiu da prisão… e esqueceu de José. <strong>Por dois anos inteiros.</strong></p>
+    <div class="card gold">
+      <span class="kicker">Pausa</span>
+      <p class="quote">Se Deus estava com José, por que não o tirou logo da prisão?</p>
+      <p class="ref">Não dê resposta pronta. Deixe a pergunta aberta, ela volta no final.</p>
+    </div>
+  </article>
+
+  <article class="cena" id="cena4">
+    <span class="kicker">Cena 4 de 6</span>
+    <h3>Do calabouço ao palácio</h3>
+    <p>Dois anos depois, o rei do Egito, o faraó, teve dois sonhos que o deixaram perturbado: sete vacas gordas sendo devoradas por sete vacas magras, e sete espigas boas engolidas por sete espigas secas. Nenhum sábio do Egito soube explicar.</p>
+    <p>Foi aí que o copeiro lembrou: “Existe um jovem hebreu na prisão que explica sonhos.” José foi trazido às pressas, barbeado, com roupa limpa. Disse ao faraó, com humildade: <em class="fala">“Eu não sei, mas Deus dará a resposta.”</em> E explicou: viriam sete anos de muita fartura, seguidos de sete anos de fome terrível. Ele aconselhou guardar comida durante os anos bons.</p>
+    <p>O faraó ficou tão impressionado que fez algo inacreditável: colocou José, o ex-escravo e ex-prisioneiro, como governador de todo o Egito. José tinha trinta anos. Ele organizou o armazenamento de grãos e, quando a fome chegou, o Egito tinha comida, e gente de outras terras vinha comprar.</p>
+  </article>
+
+  <article class="cena" id="cena5">
+    <span class="kicker">Cena 5 de 6</span>
+    <h3>Os irmãos voltam</h3>
+    <p>A fome chegou também a Canaã. Jacó mandou seus filhos ao Egito para comprar comida. Eles foram até o governador e se curvaram com o rosto no chão, exatamente como nos sonhos de tantos anos atrás.</p>
+    <p>José os reconheceu na hora. Eles não o reconheceram: ele estava vestido como egípcio, falava outra língua e já era um homem adulto. Agora imagine o momento: <strong>o poder total na mão de José.</strong> Ele poderia mandar prendê-los, deixá-los passar fome, se vingar de tudo.</p>
+    <p>Mas José não correu para o perdão fácil. Ele os testou, queria saber se eles tinham mudado. Escondeu uma taça de prata no saco de Benjamim, o irmão mais novo, o outro filho de sua mãe Raquel. Depois acusou Benjamim de roubo e disse que ele ficaria como escravo.</p>
+    <p>E aí aconteceu algo incrível. Judá, o mesmo que muitos anos antes tinha sugerido vender José, deu um passo à frente e disse: <em class="fala">“Deixe-me ficar no lugar dele. Meu pai não suportaria perder outro filho.”</em></p>
+    <div class="card gold"><p class="verse">Os irmãos tinham mudado.</p></div>
+    <p>José não aguentou. Mandou todos os egípcios saírem da sala e chorou tão alto que os de fora ouviram. Então disse: <strong>“Eu sou José. Meu pai ainda vive?”</strong></p>
+    <p>Os irmãos ficaram paralisados de medo. Mas José disse: <em class="fala">“Não fiquem tristes, nem com raiva de vocês mesmos por me terem vendido. Foi para salvar vidas que Deus me enviou na frente de vocês.”</em> Ele abraçou Benjamim, abraçou todos os irmãos, chorou em cima deles. Mandou buscar o pai, e toda a família foi morar no Egito, onde havia comida.</p>
+  </article>
+
+  <article class="cena" id="cena6">
+    <span class="kicker">Cena 6 de 6</span>
+    <h3>O medo que sobrou</h3>
+    <p>Dezessete anos depois, Jacó morreu. E os irmãos ficaram com medo outra vez. Pensaram: “E se José só nos perdoou por causa do pai? E se agora ele se vingar?” Mandaram uma mensagem dizendo que o pai, antes de morrer, tinha pedido que José os perdoasse.</p>
+    <p>Quando José recebeu a mensagem, ele chorou. Os irmãos vieram, jogaram-se no chão diante dele e disseram: “Somos seus escravos.”</p>
+    <p>E José, o governador do Egito, respondeu:</p>
+    <div class="card gold">
+      <p class="verse">“Não tenham medo. Estou eu no lugar de Deus? Vocês planejaram o mal contra mim, mas Deus transformou em bem, para fazer o que hoje se vê: salvar muitas vidas.”</p>
+      <p class="ref">Gênesis 50:19-20</p>
+    </div>
+    <p>E completou: “Eu cuidarei de vocês e de seus filhos.” A Bíblia diz que ele os consolou e falou com bondade ao coração deles.</p>
+  </article>
+
+  <section class="ed" id="conversa">
+    <div class="lead-col">
+      <span class="kicker">Após a história</span>
+      <h3>Conversa de aprofundamento</h3>
+      <p class="lead-note">Escreva as três frases no quadro e converse sobre cada uma.</p>
+    </div>
+    <div class="stack">
+      <article class="card">
+        <h4>“Deus estava com José dentro do poço.”</h4>
+        <p>Estar com Deus não significa que nada ruim vai acontecer. Significa que ele não está sozinho quando acontece. A Bíblia repete “o Senhor estava com José” justamente nas partes ruins: na casa de Potifar e na prisão.</p>
+      </article>
+      <article class="card">
+        <h4>“Deus não causou a maldade dos irmãos, mas a usou.”</h4>
+        <p>Os irmãos escolheram fazer o mal, e foi errado. Deus não foi o autor disso. Mas ele é tão grande que conseguiu tirar algo bom até daquilo.</p>
+        <p><strong>Ilustração:</strong> é como um artista que pega um papel rasgado e faz uma colagem linda. O rasgo foi ruim, mas a obra final é boa. Isso não faz o rasgo ter sido “certo”.</p>
+      </article>
+      <article class="card">
+        <h4>“Perdoar não é dizer que estava tudo bem.”</h4>
+        <p>José chorou, testou os irmãos, esperou ver se tinham mudado, e só então abraçou. Perdoar é uma decisão, e pode ser difícil. José não fingiu que não doeu. Ele escolheu não se vingar.</p>
+      </article>
+    </div>
+  </section>
+  </div>
+  <hr class="ed-divider">
+
+  <section class="ed" id="conclusao">
+    <div class="lead-col">
+      <span class="kicker">Parte 3 · 15 min</span>
+      <h3>Fechando a aula</h3>
+      <p class="lead-note">Volte às duas perguntas do começo antes das atividades.</p>
+    </div>
+    <div class="stack">
+      <article class="card">
+        <span class="kicker">Voltando à pergunta 1</span>
+        <h4>Se Deus estava com José, por que coisas ruins aconteceram?</h4>
+        <p class="muted">Pergunte à turma o que acham agora. Depois diga:</p>
+        <p class="quote">“Nem sempre sabemos o porquê. José também não sabia enquanto estava no poço ou na prisão. Só olhando para trás, anos depois, ele conseguiu ver o que Deus estava fazendo. Às vezes a resposta demora. Mas o que a história nos ensina é que Deus nunca perde o controle, nem nas partes injustas.”</p>
+      </article>
+      <article class="card">
+        <span class="kicker">Voltando à pergunta 2</span>
+        <h4>Como José conseguiu perdoar?</h4>
+        <p class="quote">“Ele não perdoou porque sentiu vontade. Perdoou porque confiava em Deus, e porque entendeu que a vingança não era a história que ele queria contar.”</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="semana-grade" aria-label="Atividades de fechamento">
+    <article class="semana-coluna">
+      <h4>Minha linha do tempo</h4>
+      <p class="kicker" style="margin-top:0">7 min</p>
+      <p>Cada criança desenha uma linha com três pontos. Ninguém é obrigado a mostrar.</p>
+      <ul class="lista">
+        <li><span class="dot"></span>Algo difícil que já passei</li>
+        <li><span class="dot"></span>Algo bom que veio depois (ou que aprendi)</li>
+        <li><span class="dot o"></span>Algo que ainda estou esperando entender</li>
+      </ul>
+    </article>
+    <article class="semana-coluna">
+      <h4>Mural do perdão</h4>
+      <p class="kicker" style="margin-top:0">3 min</p>
+      <p>Cada criança escreve num post-it, sem nome, uma situação em que é difícil perdoar alguém. Cole todos no mural e leia alguns em silêncio com a turma. Isso mostra que ninguém está sozinho nessa luta.</p>
+    </article>
+    <article class="semana-coluna">
+      <h4>Desafio da semana</h4>
+      <p class="kicker" style="margin-top:0">Para casa</p>
+      <p>Escolha uma pessoa com quem você está chateado. Peça a Deus ajuda para dar um passo pequeno em direção ao perdão: um “oi”, uma conversa, uma oração por ela.</p>
+    </article>
+  </div>
+
+  <div style="padding:28px 0 8px">
+    <button class="btn btn-gold" id="btnOracao" type="button" aria-expanded="false" aria-controls="oracao">Oração final</button>
+    <div class="oracao" id="oracao">
+      <article class="card gold">
+        <p class="quote">“Senhor, obrigado porque estás conosco mesmo quando as coisas dão errado. Ajuda-nos a confiar em ti quando não entendemos e a perdoar como José perdoou. Amém.”</p>
+        <p class="ref">Sugestão: adapte com suas palavras.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="dicas">
+    <span class="kicker">Dicas rápidas</span>
+    <ul>
+      <li><strong>Respeite o silêncio</strong> depois das perguntas. Crianças dessa idade precisam de alguns segundos antes de responder.</li>
+      <li><strong>Evite respostas fáceis</strong> como “tudo acontece por uma razão”. Prefira: “Nem sempre entendemos, mas Deus está perto.”</li>
+      <li><strong>Fique atento</strong> a crianças que possam estar passando por bullying ou problemas em casa. Esteja disponível para conversar em particular depois.</li>
+      <li><strong>Turma agitada?</strong> Faça a cena 2 como encenação com três voluntários.</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer class="rodape">
+  <div class="rod-grade">
+    <div class="rod-marca">
+      <a class="rod-logo" href="#inicio" aria-label="Voltar ao início">
+        <img src="assets/logo.png" alt="Igreja Nova Vida de Botafogo">
+      </a>
+      <p class="rod-lema">Não apenas uma Igreja, mas uma Família!</p>
+    </div>
+    <div class="rod-coluna">
+      <h2>Aula</h2>
+      <ul class="rod-lista">
+        <li><a href="#introducao">Introdução · 10 min</a></li>
+        <li><a href="#desenvolvimento">História · 35 min</a></li>
+        <li><a href="#conclusao">Conclusão · 15 min</a></li>
+        <li><a href="#versiculo">Gênesis 50:20</a></li>
+      </ul>
+    </div>
+    <div class="rod-coluna">
+      <h2>Materiais</h2>
+      <p class="rod-endereco">Manto ou tecido colorido, Bíblias, papel e canetas, post-its e uma folha grande para o mural.</p>
+    </div>
+  </div>
+  <p class="rod-base">Aula para juniores · José · Gênesis 37–50 · Igreja Nova Vida de Botafogo</p>
+</footer>
+
+<button class="topo" id="topo" type="button" aria-label="Voltar ao topo">↑</button>
+
+<script>
+(function(){
+  var links = document.querySelectorAll('[data-t]');
+  var ids = ['inicio','introducao','desenvolvimento','conclusao'];
+  var pills = document.querySelectorAll('#pills a');
+  var cenas = ['cena1','cena2','cena3','cena4','cena5','cena6','conversa'];
+  var bar = document.getElementById('progress');
+  var topo = document.getElementById('topo');
+
+  function marcaParte(){
+    var y = window.scrollY + window.innerHeight * 0.28;
+    var atual = ids[0];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= y) atual = id;
+    });
+    links.forEach(function(a){ a.classList.toggle('on', a.dataset.t === atual); });
+  }
+  function marcaCena(){
+    var y = window.scrollY + 150;
+    var atual = null;
+    cenas.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= y) atual = id;
+    });
+    var dev = document.getElementById('desenvolvimento');
+    var fim = document.getElementById('conclusao');
+    var noDev = dev && fim && dev.offsetTop <= window.scrollY + 150 && fim.offsetTop > window.scrollY + 150;
+    pills.forEach(function(a){
+      var on = noDev && a.getAttribute('href') === '#' + atual;
+      a.classList.toggle('on', on);
+      if (on) {
+        var box = a.parentNode;
+        box.scrollLeft = a.offsetLeft - box.clientWidth / 2 + a.clientWidth / 2;
+      }
+    });
+  }
+  function progresso(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    topo.classList.toggle('on', window.scrollY > 500);
+  }
+  function tick(){ marcaParte(); marcaCena(); progresso(); }
+  var pendente = false;
+  window.addEventListener('scroll', function(){
+    if (pendente) return;
+    pendente = true;
+    requestAnimationFrame(function(){ tick(); pendente = false; });
+  }, {passive:true});
+  window.addEventListener('resize', tick);
+  tick();
+
+  topo.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  var btn = document.getElementById('btnOracao');
+  var box = document.getElementById('oracao');
+  btn.addEventListener('click', function(){
+    var aberta = box.classList.toggle('aberta');
+    btn.setAttribute('aria-expanded', aberta ? 'true' : 'false');
+    btn.textContent = aberta ? 'Ocultar oração' : 'Oração final';
+  });
+
+  var toggle = document.querySelector('.navbar__toggle');
+  var drawer = document.getElementById('menu-mobile');
+  var overlay = document.querySelector('.navbar__overlay');
+  var fechar = document.querySelector('.navbar__drawer-close');
+  function setMenu(open){
+    drawer.classList.toggle('is-open', open);
+    overlay.classList.toggle('is-open', open);
+    overlay.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    document.body.classList.toggle('menu-open', open);
+  }
+  toggle.addEventListener('click', function(){ setMenu(!drawer.classList.contains('is-open')); });
+  fechar.addEventListener('click', function(){ setMenu(false); });
+  overlay.addEventListener('click', function(){ setMenu(false); });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setMenu(false); });
+  });
+})();
+</script>
+</body>
+</html>
